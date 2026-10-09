@@ -177,6 +177,21 @@ you made on the user's behalf), what was checked by hand, the gate ticked for
 what you ran, and `Fixes #<N>` for each issue, then
 `🤖 Generated with [Claude Code](https://claude.com/claude-code)`.
 
+Fill checklists with the maintainer's convention: `[x]` = done, `[-]` = does
+not apply to this change, `[ ]` = still to do. Never leave a non-applicable
+item as `[ ]` or tick it. In the PR's checklist that means `[x]` and `[-]` only
+once it is ready.
+
+When the PR is ready, update each issue's Done-when list the same way: `[x]` for
+what you delivered, `[-]` plus a few words of why for items that turned out not
+to apply. Edit only those boxes, leaving every other character of the body as it
+is:
+
+```bash
+gh issue view <N> --json body --jq .body > <file>   # change the boxes only
+gh issue edit <N> --body-file <file>
+```
+
 **Wait for CI in the background, never with a blocking foreground watch**:
 run `gh pr checks <pr> --watch` as a background command (or poll
 `gh pr checks <pr>` between other work) so the session stays responsive and a

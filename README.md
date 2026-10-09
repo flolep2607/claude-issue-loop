@@ -125,6 +125,10 @@ Agent comments end with the marker `<!-- issue-loop-agent -->`. Agents post
 under your own `gh` account, so the marker is how the loop tells their text
 from yours; your comments outrank the issue body.
 
+Checklists (the PR's gate, an issue's Done-when) use `[x]` = done, `[-]` = does
+not apply to this change, `[ ]` = still to do; a non-applicable item is never
+left as `[ ]` or ticked.
+
 ## Configuration
 
 The project's own instructions decide. The agents read, in order:

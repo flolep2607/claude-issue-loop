@@ -14,6 +14,9 @@ tests" and why. -->
 
 ## Gate
 
+<!-- Checklist convention: [x] = done, [-] = does not apply to this change,
+[ ] = still to do. Never leave a non-applicable item as [ ] or tick it. -->
+
 - [ ] Build, lint and tests pass, as CI runs them (list the commands)
 - [ ] Generated files rebuilt and committed, if any changed
 - [ ] Docs updated where behaviour changed

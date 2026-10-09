@@ -60,7 +60,8 @@ a design document; detail past that is time the user waited for:
   Quote the user's words when they came with some.
 - **Where** — the files and functions involved, as `path:line`, with one line
   each on their part. Name the tests that cover them, or will move.
-- **Done when** — acceptance criteria a reviewer can check, as a list.
+- **Done when** — acceptance criteria a reviewer can check, as a `- [ ]`
+  list. A solver marks `[-]` any item that turns out not to apply.
 - **Test plan** — which tests to add or change, and anything that must be
   checked by hand (the way the project's instructions say to run it).
 - **Constraints** — only the ones from the project's instructions that apply
