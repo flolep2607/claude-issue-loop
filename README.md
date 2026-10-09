@@ -111,6 +111,32 @@ It looks first, shows what it would do, and asks before writing anything:
 
 Nothing is committed; you decide what to commit.
 
+## opencode
+
+The loop also runs under [opencode](https://opencode.ai). The two subagents and
+the `/issues` command are ported to opencode's own format under `opencode/` in
+this repo — copy them into a project's `.opencode/`:
+
+```bash
+mkdir -p .opencode/agents .opencode/commands
+base=https://raw.githubusercontent.com/flolep2607/claude-issue-loop/main/opencode
+curl -fsSL $base/agents/issue-writer.md -o .opencode/agents/issue-writer.md
+curl -fsSL $base/agents/issue-solver.md -o .opencode/agents/issue-solver.md
+curl -fsSL $base/commands/issues.md     -o .opencode/commands/issues.md
+```
+
+Then `/issues <request>` files an issue and `/issues` works the queue, the same
+as in Claude Code; `@issue-writer` and `@issue-solver` are the subagents. The
+model is left unset so they inherit your configured one — pin a cheaper model
+on the writer and a stronger one on the solver in each file's front matter if
+you like.
+
+The GitHub side — the four labels, the issue forms, the PR template — is
+harness-neutral and set up once (run `/issue-loop:setup` from Claude Code, or
+create the labels by hand with the `gh label create` commands that skill lists).
+The git hooks are Claude-Code-scoped (they gate on `CLAUDECODE=1`); under
+opencode the solver just pushes each commit itself.
+
 ## Use
 
 | command | what it does |
