@@ -1,0 +1,13 @@
+{
+  "name": "issue-loop",
+  "version": "0.1.0",
+  "description": "GitHub issues as the queue: an agent writes solvable issues from one-line requests, solver agents claim them with a draft PR, work in pushed steps, ask on the issue when unsure, and hand back a green PR. Never merges, never releases.",
+  "author": {
+    "name": "Florian Leprat",
+    "url": "https://github.com/flolep2607"
+  },
+  "homepage": "https://github.com/flolep2607/claude-issue-loop",
+  "repository": "https://github.com/flolep2607/claude-issue-loop",
+  "license": "MIT",
+  "keywords": ["github", "issues", "pull-requests", "agents", "workflow", "loop"]
+}

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# issue-loop: a commit made inside a Claude Code session carries the project's
+# co-author trailer, so no agent has to remember it on every commit. A person's
+# own commit — no CLAUDECODE in the environment — is left exactly as written.
+#
+# The trailer is `co_author:` in .claude/issue-loop.md; without one this hook
+# does nothing. Installed by /issue-loop:setup.
+[[ "${CLAUDECODE:-}" == 1 ]] || exit 0
+msg="$1"
+source="${2:-}"
+# A merge or squash message is git's own, and an amend keeps what it had.
+case "$source" in merge|squash|commit) exit 0 ;; esac
+top=$(git rev-parse --show-toplevel 2>/dev/null) || exit 0
+cfg="$top/.claude/issue-loop.md"
+[[ -f "$cfg" ]] || exit 0
+trailer=$(awk 'NR==1&&/^---$/{f=1;next} f&&/^---$/{exit} f' "$cfg" \
+  | sed -n 's/^co_author:[[:space:]]*//p' | head -n1 | sed 's/[[:space:]]#.*$//' \
+  | sed -e 's/[[:space:]]*$//' -e 's/^"\(.*\)"$/\1/' -e "s/^'\(.*\)'$/\1/")
+[[ -n "$trailer" ]] || exit 0
+grep -qiF "$trailer" "$msg" && exit 0
+git interpret-trailers --in-place --trailer "$trailer" "$msg"

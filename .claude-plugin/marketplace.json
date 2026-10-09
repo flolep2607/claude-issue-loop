@@ -1,0 +1,15 @@
+{
+  "name": "claude-issue-loop",
+  "description": "The issue-loop plugin: GitHub issues in, reviewed-ready pull requests out",
+  "owner": {
+    "name": "Florian Leprat",
+    "url": "https://github.com/flolep2607"
+  },
+  "plugins": [
+    {
+      "name": "issue-loop",
+      "source": "./",
+      "description": "Write issues from one-liners, solve them as draft PRs in pushed steps, ask on the issue, never merge"
+    }
+  ]
+}

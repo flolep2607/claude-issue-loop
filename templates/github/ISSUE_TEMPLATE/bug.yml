@@ -1,0 +1,40 @@
+name: Bug
+description: Something that works wrong, or stopped working
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Add the `agent-ready` label once this says enough for an agent to fix
+        it without asking; the `/issues` loop picks those up.
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: The version, commit or deployment where it happened, if it has one
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you saw, including any error text exactly as shown
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: How to make it happen again
+      placeholder: |
+        1. ...
+        2. ...
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or screenshots
+      description: Leave out tokens, keys and passwords — this may be public.
+      render: text

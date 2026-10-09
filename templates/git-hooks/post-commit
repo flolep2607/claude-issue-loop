@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+# issue-loop: push every agent commit as it is made, so a draft PR always shows
+# where the work is. That is what lets a later session resume an issue from
+# the draft alone, and what a person watching the PR sees move.
+#
+# Only inside a Claude Code session; only a branch that already tracks one on
+# the remote — set by the first `git push -u`, which is the deliberate step and
+# the solver's lock — and never the base branch, which is only ever written by
+# merging a PR. Nothing during a rebase, whose intermediate commits are not
+# meant to be seen. In the background, so the commit returns at once; failures
+# go to the log and not to the agent, who will see a stale PR and push by hand.
+[[ "${CLAUDECODE:-}" == 1 ]] || exit 0
+branch=$(git symbolic-ref --quiet --short HEAD) || exit 0
+base=""
+top=$(git rev-parse --show-toplevel 2>/dev/null)
+cfg="$top/.claude/issue-loop.md"
+if [[ -f "$cfg" ]]; then
+  base=$(awk 'NR==1&&/^---$/{f=1;next} f&&/^---$/{exit} f' "$cfg" \
+    | sed -n 's/^base:[[:space:]]*//p' | head -n1 | sed 's/[[:space:]]#.*$//' | tr -d "\"' ")
+fi
+case "$branch" in main|master|"$base") exit 0 ;; esac
+git rev-parse --abbrev-ref --symbolic-full-name '@{u}' >/dev/null 2>&1 || exit 0
+gitdir=$(git rev-parse --git-dir)
+[[ -d "$gitdir/rebase-merge" || -d "$gitdir/rebase-apply" ]] && exit 0
+log="$(git rev-parse --git-common-dir)/issue-loop-push.log"
+nohup git push --quiet >>"$log" 2>&1 </dev/null &
+exit 0
