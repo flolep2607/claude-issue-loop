@@ -76,12 +76,22 @@ It looks first, shows what it would do, and asks before writing anything:
 
 - **Labels** — creates the four labels below with `gh label create --force`.
 - **Issue forms and PR template** (optional) — copies `bug.yml`, `idea.yml`,
-  `config.yml` and `pull_request_template.md` into `.github/`, skipping any
-  file that already exists unless you name it.
+  `task.yml`, `config.yml` and `pull_request_template.md` into `.github/`,
+  skipping any file that already exists unless you name it. `task.yml` is a
+  small "Task for an agent" form that applies `agent-ready` itself, so an issue
+  filed from your phone is picked up in one step; setup rewrites its label if
+  you renamed it.
+- **CONTRIBUTING section** (optional) — appends a short "Working with the
+  issue agents" section (how the loop works, the labels, how to file, agents
+  never merge) to an existing `CONTRIBUTING.md`, or creates one. Never
+  overwrites.
+- **Label workflow** (optional) — `.github/workflows/issue-loop-labels.yml`
+  re-creates the four labels weekly and on demand if they go missing.
 - **Git hooks** (optional) — see [Git hooks](#git-hooks). It checks for an
   existing `core.hooksPath`, husky, lefthook or pre-commit and never replaces
   their hooks.
-- **Settings** — writes a commented `.claude/issue-loop.md`.
+- **Settings** — writes a commented `.claude/issue-loop.md`, with an example
+  block for per-project instructions.
 
 Nothing is committed; you decide what to commit.
 
@@ -98,8 +108,9 @@ The skills are also reachable by their full names, `/issue-loop:issues` and
 The agents are `issue-loop:issue-writer` and `issue-loop:issue-solver`; you can
 also ask for one directly ("solve #42 with the issue-solver").
 
-You can file issues anywhere — the GitHub app included. Add the `agent-ready`
-label when an issue says enough for an agent to act on it without asking.
+You can file issues anywhere — the GitHub app included. The "Task for an
+agent" form applies `agent-ready` for you; on any other issue, add the label
+when an issue says enough for an agent to act on it without asking.
 
 ## Labels
 
@@ -143,8 +154,11 @@ gate:                         # [from CLAUDE.md / AGENTS.md / CONTRIBUTING.md / 
 ---
 
 Check UI changes with `npm run dev` and a screenshot at phone width.
-Never run `npm run deploy`.
+Never run `npm run deploy`. Never touch `vendor/`.
 ```
+
+The template ships a commented example block below the settings ("always run X
+before pushing", "never touch the vendored folder") so this is easy to find.
 
 - **Commit identity** is whatever the project's git config says; the agents
   never set or change it.
@@ -193,7 +207,8 @@ agents/issue-writer.md            one-line request → solvable issue
 agents/issue-solver.md            issue → draft PR → ready PR
 skills/issues/SKILL.md            /issues: file, or one pass over the queue
 skills/setup/SKILL.md             /issue-loop:setup
-templates/                        issue forms, PR template, git hooks, settings
+templates/                        issue forms, PR template, CONTRIBUTING section,
+                                  label workflow, git hooks, settings
 ```
 
 ## License

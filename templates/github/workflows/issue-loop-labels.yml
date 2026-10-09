@@ -1,0 +1,26 @@
+# Re-creates the four issue-loop labels if someone deleted them. The loop and
+# the "Task for an agent" form both depend on them existing; `--force` makes
+# this a no-op when they do. If the project renamed a label in
+# .claude/issue-loop.md, edit the names below to match (setup does this).
+name: issue-loop labels
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 6 * * 1"
+
+permissions:
+  issues: write
+
+jobs:
+  labels:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - run: |
+          gh label create agent-ready    --force --color 0E8A16 --description "Written and waiting for an agent to solve it"
+          gh label create agent-working  --force --color FBCA04 --description "An agent is on it, with a draft PR from issue-<N>"
+          gh label create agent-question --force --color D93F0B --description "The agent asked on the issue and is waiting for an answer"
+          gh label create agent-pr       --force --color 1D76DB --description "The PR is ready for review"

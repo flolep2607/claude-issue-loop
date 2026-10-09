@@ -39,3 +39,12 @@ otherwise guess — for example:
 - generated files that must be rebuilt and committed in the same change;
 - commands an agent must never run here (a deploy, a publish, a migration
   against a shared database).
+
+<!--
+Example instructions — replace with your own, or delete this comment:
+
+- Always run `npm run lint && npm test` before pushing, even for a docs change.
+- Never touch `vendor/`; it is copied in from upstream and overwritten.
+- Regenerate `src/api/schema.ts` with `npm run codegen` when an endpoint changes.
+- Keep PR titles to one sentence in plain words; they become release notes.
+-->
