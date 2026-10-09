@@ -64,6 +64,22 @@ Update later with `claude plugin update issue-loop@claude-issue-loop`.
 Requirements: `git` (2.32+), and the GitHub CLI `gh`, authenticated with write
 access to the repository.
 
+### Make a repo carry the plugin (for teammates)
+
+The commands above install the plugin for you. To have everyone who opens a
+repository be offered it, declare the marketplace and plugin in the repo's
+committed `.claude/settings.json`. `scripts/add-issue-loop.sh` does it in one
+`jq` call — it creates the file if missing, merges into it if it exists, and is
+safe to re-run:
+
+```bash
+scripts/add-issue-loop.sh            # the current repo
+scripts/add-issue-loop.sh ../other   # some other repo
+```
+
+Commit the change. Teammates still confirm the install themselves — Claude Code
+never installs a plugin without asking — but the marketplace is already there.
+
 ## Set up a project
 
 In the project's directory, start Claude Code and run:
